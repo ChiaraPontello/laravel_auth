@@ -77,7 +77,7 @@ class PostController extends Controller
 
         //aggiungiamo l'id dell'utente proprietario del post
         $formData['user_id'] = $post->user_id;
-        $post = update($formData);
+        $post -> update($formData);
         return redirect()->route('admin.posts.show', $post->id);
     }
 
