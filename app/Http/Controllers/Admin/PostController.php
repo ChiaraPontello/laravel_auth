@@ -7,6 +7,7 @@ use App\Models\Post;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 
 class PostController extends Controller
@@ -43,7 +44,12 @@ class PostController extends Controller
 
         //aggiungiamo l'id dell'utente
         $formData['user_id'] = $UserId;
+        if($request->hasFile('image')){
+            $path = Storage::put('uploads', $formData['image']);
+            $formData['image'] =$path;
+        }
         $post = Post::create($formData);
+
         return redirect()->route('admin.posts.show', $post->id);
     }
 
@@ -77,6 +83,9 @@ class PostController extends Controller
 
         //aggiungiamo l'id dell'utente proprietario del post
         $formData['user_id'] = $post->user_id;
+        if($request->hasFile('image')) {
+            //AGGIUNGERE SCREEN
+        }
         $post -> update($formData);
         return redirect()->route('admin.posts.show', $post->id);
     }
